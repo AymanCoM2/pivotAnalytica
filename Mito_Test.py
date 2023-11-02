@@ -10,7 +10,7 @@ print(tokenQuery)
 # !  http://localhost:8501/?name=ayman
 # & {'name': ['ayman']}
 
-
+# https://pivotanalytica.streamlit.app/
 def renderDataOnTable(dbName, dbSqlQuery):
     server = '10.10.10.100'
     database = dbName
