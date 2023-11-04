@@ -11,6 +11,10 @@ if (queryStringObject):
     tokenQuery = queryStringObject['name'][0]
 
 
+def writePivotIntoFile():
+    pass
+
+
 def doThePivotCode(new_dfs, code):
     st.write(new_dfs)
     st.code(code)
@@ -22,6 +26,8 @@ def doThePivotCode(new_dfs, code):
             # file.write("dataframes = {}".format(list(new_dfs.keys())[1:]))
 
 # ? 2
+
+
 def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode):
     server = '10.10.10.100'
     database = dbName
@@ -34,7 +40,9 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode):
     st.title('MITO SHEET')
     dataFrame = pd.read_sql(query_2, connection)
 
-    if True:
+    if pivotCode is not None:
+        # & First Of all Write the Pivot Code In the File
+        writePivotIntoFile()
         renderAlsoPivot(dataFrame)
     else:
         new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
