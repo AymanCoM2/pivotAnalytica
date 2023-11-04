@@ -1,4 +1,3 @@
-from mitosheet.public.v3 import *
 from mitosheet.streamlit.v1 import spreadsheet
 from mitosheet.public.v3 import *
 
