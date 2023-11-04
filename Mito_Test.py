@@ -4,29 +4,56 @@ import pyodbc
 import pandas as pd
 import jwt
 from mitosheet.public.v3 import *
-from real import renderAlsoPivot
+from my_script import renderAlsoPivot
+import requests
+import json
+
+api_url = "http://10.10.20.18:8001/api/save-pivot"
+
 
 queryStringObject = st.experimental_get_query_params()
 if (queryStringObject):
     tokenQuery = queryStringObject['name'][0]
 
 
-def writePivotIntoFile():
-    pass
+def writePivotIntoFile(pivotCode):
+    with open("my_script.py", "w") as file:
+        file.write(pivotCode)
 
 
-def doThePivotCode(new_dfs, code):
+def doThePivotCode(new_dfs, code, queryId):
+    finalFile = ''
     st.write(new_dfs)
     st.code(code)
     dataframes = list(new_dfs.keys())[1:]
+    fileContent = ''
     print()
     if st.button('Save Pivots'):
         with open("my_script.py", "w") as file:
+            file.write('from mitosheet.streamlit.v1 import spreadsheet\n')
             file.write(code)
-            # file.write("dataframes = {}".format(list(new_dfs.keys())[1:]))
+            file.write(
+                'new_dfs, code = spreadsheet(dataFrame, dataFrame_pivot, df_names=[\'dataFrame\', \'dataFrame_pivot\'])\n')
+        with open('my_script.py', 'r') as file:
+            fileContent = file.read()
+            data = {
+                "fileContent": fileContent,
+                "queryId": queryId,
+            }
+            json_data = json.dumps(data)
+            headers = {"Content-Type": "application/json"}
+            response = requests.post(api_url,  data=json_data, headers=headers)
+            if response.status_code == 200:
+                print("Request was successful.")
+                response_data = json.loads(response.text)
+                finalFile = response_data['fC']
+            else:
+                print("Request failed with status code:", response.status_code)
+            with open("my_script.py", "w") as file:
+                file.write(finalFile)
 
 
-def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode):
+def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId):
     server = '10.10.10.100'
     database = dbName
     username = 'ayman'
@@ -39,16 +66,14 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode):
     dataFrame = pd.read_sql(query_2, connection)
 
     if pivotCode is not None:
-        # & First Of all Write the Pivot Code In the File
-        writePivotIntoFile()
+        writePivotIntoFile(pivotCode)
         renderAlsoPivot(dataFrame)
     else:
         new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
         if (isAdmin):  # ! If Admin Give him Permission To see the "Save Button" For the Code
-            doThePivotCode(new_dfs, code)
+            doThePivotCode(new_dfs, code, queryId)
 
 
-# ? 1
 try:
     key = "simpleKey"
     aud = "urn:foo"
@@ -58,7 +83,8 @@ try:
     dbSqlQuery = resPonse['sqlQuery']
     isAdmin = resPonse['isAdmin']
     pivotCode = resPonse['pivotCode']
-    renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode)
+    queryId = resPonse['queryId']
+    renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId)
 except Exception:
     # ExpiredSignatureError
     st.set_page_config(layout="wide")
