@@ -25,8 +25,6 @@ def doThePivotCode(new_dfs, code):
             file.write(code)
             # file.write("dataframes = {}".format(list(new_dfs.keys())[1:]))
 
-# ? 2
-
 
 def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode):
     server = '10.10.10.100'
