@@ -3,6 +3,8 @@ from mitosheet.streamlit.v1 import spreadsheet
 import pyodbc
 import pandas as pd
 import jwt
+from mitosheet.public.v3 import *
+
 
 queryStringObject = st.experimental_get_query_params()
 if (queryStringObject):
@@ -20,6 +22,7 @@ def doThePivotCode(new_dfs, code):
             # file.write("dataframes = {}".format(list(new_dfs.keys())[1:]))
 
 
+# ? 2
 def renderDataOnTable(dbName, dbSqlQuery):
     server = '10.10.10.100'
     database = dbName
@@ -32,10 +35,29 @@ def renderDataOnTable(dbName, dbSqlQuery):
     st.set_page_config(layout="wide")
     st.title('MITO SHEET')
     dataFrame = pd.read_sql(query_2, connection)
-    new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
+
+
+
+    # ! --->
+    if True:
+        tmp_df = dataFrame[['ItemName', 'RWhs']].copy()
+        pivot_table = tmp_df.pivot_table(
+            index=['ItemName'],
+            columns=['ItemName'],
+            values=['RWhs'],
+            aggfunc={'RWhs': ['count']}
+        )
+        pivot_table = pivot_table.set_axis(
+            [flatten_column_header(col) for col in pivot_table.keys()], axis=1)
+        dataFrame_pivot = pivot_table.reset_index()
+    # ! --->
+
+    
+    new_dfs, code = spreadsheet(dataFrame , dataFrame_pivot, df_names=['dataFrame' , 'dataFrame_pivot'])
     doThePivotCode(new_dfs, code)
 
 
+# ? 1
 try:
     key = "simpleKey"
     aud = "urn:foo"
@@ -45,7 +67,7 @@ try:
     dbSqlQuery = resPonse['sqlQuery']
     renderDataOnTable(dbName, dbSqlQuery)
 except Exception:
-    # raise ExpiredSignatureError("Signature has expired")
+    # ExpiredSignatureError
     st.set_page_config(layout="wide")
     st.title('Access Denied')
     print("An exception occurred")
