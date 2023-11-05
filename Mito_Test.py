@@ -75,19 +75,29 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId):
             doThePivotCode(new_dfs, code, queryId)
 
 
-try:
-    key = "simpleKey"
-    aud = "urn:foo"
-    alg = ["HS256"]
-    resPonse = jwt.decode(tokenQuery, key, audience=aud, algorithms=alg)
-    dbName = resPonse['dbName']
-    dbSqlQuery = resPonse['sqlQuery']
-    isAdmin = resPonse['isAdmin']
-    pivotCode = resPonse['pivotCode']
-    queryId = resPonse['queryId']
-    renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId)
-except Exception:
-    # ExpiredSignatureError
-    st.set_page_config(layout="wide")
-    st.title('Access Denied')
-    print("An exception occurred")
+# try:
+#     key = "simpleKey"
+#     aud = "urn:foo"
+#     alg = ["HS256"]
+#     resPonse = jwt.decode(tokenQuery, key, audience=aud, algorithms=alg)
+#     dbName = resPonse['dbName']
+#     dbSqlQuery = resPonse['sqlQuery']
+#     isAdmin = resPonse['isAdmin']
+#     pivotCode = resPonse['pivotCode']
+#     queryId = resPonse['queryId']
+#     renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId)
+# except Exception:
+#     # ExpiredSignatureError
+#     st.set_page_config(layout="wide")
+#     st.title('Access Denied')
+#     print("An exception occurred")
+key = "simpleKey"
+aud = "urn:foo"
+alg = ["HS256"]
+resPonse = jwt.decode(tokenQuery, key, audience=aud, algorithms=alg)
+dbName = resPonse['dbName']
+dbSqlQuery = resPonse['sqlQuery']
+isAdmin = resPonse['isAdmin']
+pivotCode = resPonse['pivotCode']
+queryId = resPonse['queryId']
+renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId)
