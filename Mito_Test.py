@@ -4,13 +4,13 @@ import pyodbc
 import pandas as pd
 import jwt
 from mitosheet.public.v3 import *
-from my_script import renderAlsoPivot
 import requests
 import json
+from RestrictedPython import compile_restricted
+from RestrictedPython import safe_globals
 
 
 api_url = "http://10.10.10.66:8002/api/save-pivot"
-
 
 queryStringObject = st.experimental_get_query_params()
 if (queryStringObject):
@@ -46,12 +46,8 @@ def doThePivotCode(new_dfs, code, queryId):
             response = requests.post(api_url,  data=json_data, headers=headers)
             if response.status_code == 200:
                 print("Request was successful.")
-                response_data = json.loads(response.text)
-                finalFile = response_data['fC']
             else:
                 print("Request failed with status code:", response.status_code)
-            with open("my_script.py", "w") as file:
-                file.write(finalFile)
 
 
 def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId):
@@ -66,9 +62,10 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId):
     st.title('MITO SHEET')
     dataFrame = pd.read_sql(query_2, connection)
 
-    if pivotCode is not None:
+    if pivotCode != None:
         writePivotIntoFile(pivotCode)
-        renderAlsoPivot(dataFrame)
+        exec_globals = {'dataFrame': dataFrame}
+        exec(pivotCode, exec_globals)
     else:
         new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
         if (isAdmin):  # ! If Admin Give him Permission To see the "Save Button" For the Code
@@ -80,7 +77,7 @@ try:
     aud = "2coomdashboard"
     alg = ["HS256"]
     resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
-                        audience=aud, options={"verify_exp": False},)
+                          audience=aud, options={"verify_exp": False},)
     dbName = resPonse['dbName']
     dbSqlQuery = resPonse['sqlQuery']
     isAdmin = resPonse['isAdmin']
@@ -92,4 +89,3 @@ except Exception:
     st.set_page_config(layout="wide")
     st.title('Access Denied')
     print("An exception occurred")
-
