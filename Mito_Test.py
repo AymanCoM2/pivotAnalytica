@@ -59,7 +59,7 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId):
     database = dbName
     username = 'ayman'
     password = 'admin@1234'
-    connection_string = f"DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
+    connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.4.1}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
     connection = pyodbc.connect(connection_string)
     query_2 = (dbSqlQuery)
     st.set_page_config(layout="wide")
