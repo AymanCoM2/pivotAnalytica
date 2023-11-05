@@ -92,7 +92,7 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId):
 #     st.title('Access Denied')
 #     print("An exception occurred")
 key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
-aud = "2CoomDashboard"
+aud = "2coomdashboard"
 alg = ["HS256"]
 # resPonse = jwt.decode(tokenQuery, key, audience=aud, algorithms=alg)
 resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
