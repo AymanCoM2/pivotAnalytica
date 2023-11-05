@@ -94,7 +94,14 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCode, queryId):
 key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
 aud = "http://10.10.10.66:8052/"
 alg = ["HS256"]
-resPonse = jwt.decode(tokenQuery, key, audience=aud, algorithms=alg)
+# resPonse = jwt.decode(tokenQuery, key, audience=aud, algorithms=alg)
+resPonse = jwt.decode(
+    tokenQuery,
+    key,
+    algorithms=alg,
+    audience=aud,
+    options={"verify_exp": False},
+)
 dbName = resPonse['dbName']
 dbSqlQuery = resPonse['sqlQuery']
 isAdmin = resPonse['isAdmin']
