@@ -8,7 +8,8 @@ from my_script import renderAlsoPivot
 import requests
 import json
 
-api_url = "http://10.10.20.18:8001/api/save-pivot"
+
+api_url = "http://10.10.10.66:8002/api/save-pivot"
 
 
 queryStringObject = st.experimental_get_query_params()
