@@ -29,8 +29,6 @@ def handleOneOrBulkPivots(codeString):
         ','.join(df_names), str(df_names))
     return output_string
 
-# ! 4 No Need For it now
-
 
 def writePivotIntoFile(pivotCodeList):
     with open("my_script.py", "w") as file:
