@@ -65,6 +65,23 @@ def doThePivotCode(new_dfs, code, queryId, userId):
                 print("Request failed with status code:", response.status_code)
 
 
+@st.cache_resource
+def init_connection(server, database, username, password):
+    return pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+        + st.secrets["server"]
+        + ";DATABASE="
+        + st.secrets["database"]
+        + ";UID="
+        + st.secrets["username"]
+        + ";PWD="
+        + st.secrets["password"]
+    )
+
+
+conn = init_connection()
+
+
 def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId):
     # server = '10.10.10.100'
     server = 'jou.is-by.us'
@@ -74,8 +91,9 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userI
     # !@ Port is Very important to do this Connection
     # connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
     # connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.4.1}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
-    connection_string = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
-    connection = pyodbc.connect(connection_string)
+    # connection_string = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
+    # connection = pyodbc.connect(connection_string)
+    connection = init_connection(server, database, username, password)
     query_2 = (dbSqlQuery)
     # st.set_page_config(layout="wide")
     st.title('MITO SHEET')
