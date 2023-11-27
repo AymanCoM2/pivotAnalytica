@@ -69,13 +69,13 @@ def doThePivotCode(new_dfs, code, queryId, userId):
 def init_connection(server, database, username, password):
     return pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-        + st.secrets["server"]
+        + st.secrets[server]
         + ";DATABASE="
-        + st.secrets["database"]
+        + st.secrets[database]
         + ";UID="
-        + st.secrets["username"]
+        + st.secrets[username]
         + ";PWD="
-        + st.secrets["password"]
+        + st.secrets[password]
     )
 
 
