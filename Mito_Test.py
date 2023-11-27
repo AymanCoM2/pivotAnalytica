@@ -79,7 +79,7 @@ def init_connection(server, database, username, password):
     )
 
 
-conn = init_connection()
+# conn = init_connection()
 
 
 def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId):
