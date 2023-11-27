@@ -7,6 +7,8 @@ from mitosheet.public.v3 import *
 import requests
 import json
 import re
+from streamlit.components.v1 import html
+from IPython.display import display, Javascript
 
 # api_url = "http://10.10.10.66:8002/api/save-pivot"
 api_url = "http://127.0.0.1:8000/api/save-pivot"
@@ -65,15 +67,17 @@ def doThePivotCode(new_dfs, code, queryId, userId):
 
 
 def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId):
-    server = '10.10.10.100'
+    # server = '10.10.10.100'
+    server = 'jou.is-by.us'
     database = dbName
     username = 'ayman'
     password = 'admin@1234'
-    connection_string = f"DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
+    # !@ Port is Very important to do this Connection 
+    connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
     # connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.4.1}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
     connection = pyodbc.connect(connection_string)
     query_2 = (dbSqlQuery)
-    st.set_page_config(layout="wide")
+    # st.set_page_config(layout="wide")
     st.title('MITO SHEET')
     dataFrame = pd.read_sql(query_2, connection)
     if pivotCodeList:
@@ -87,25 +91,40 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userI
         doThePivotCode(new_dfs, code, queryId, userId)
 
 
-try:
-    key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
-    aud = "2coomdashboard"
-    alg = ["HS256"]
-    resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
-                          audience=aud, options={"verify_exp": False},)
-    queryId = resPonse['queryId']
-    dbName = resPonse['dbName']
-    dbSqlQuery = resPonse['sqlQuery']
-    pivotCodeList = resPonse['pivotCode']
-    isAdmin = resPonse['isAdmin']
-    userId = resPonse['userId']
+# try:
+#     key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
+#     aud = "2coomdashboard"
+#     alg = ["HS256"]
+#     resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
+#                           audience=aud, options={"verify_exp": False},)
+#     queryId = resPonse['queryId']
+#     dbName = resPonse['dbName']
+#     dbSqlQuery = resPonse['sqlQuery']
+#     pivotCodeList = resPonse['pivotCode']
+#     isAdmin = resPonse['isAdmin']
+#     userId = resPonse['userId']
 
-    print('///////////////////////////////////')
-    print(pivotCodeList)
-    renderDataOnTable(dbName, dbSqlQuery, isAdmin,
-                      pivotCodeList, queryId, userId)
-except Exception:
-    # ExpiredSignatureError
-    st.set_page_config(layout="wide")
-    st.title('Access Denied')
-    print("An exception occurred")
+#     print('///////////////////////////////////')
+#     print(pivotCodeList)
+#     renderDataOnTable(dbName, dbSqlQuery, isAdmin,
+#                       pivotCodeList, queryId, userId)
+# except Exception:
+#     # ExpiredSignatureError
+#     st.set_page_config(layout="wide")
+#     st.title('Access Denied')
+#     print("An exception occurred")
+
+
+key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
+aud = "2coomdashboard"
+alg = ["HS256"]
+resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
+                      audience=aud, options={"verify_exp": False},)
+queryId = resPonse['queryId']
+dbName = resPonse['dbName']
+dbSqlQuery = resPonse['sqlQuery']
+pivotCodeList = resPonse['pivotCode']
+isAdmin = resPonse['isAdmin']
+userId = resPonse['userId']
+
+renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId)
