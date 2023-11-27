@@ -91,40 +91,40 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userI
         doThePivotCode(new_dfs, code, queryId, userId)
 
 
-try:
-    key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
-    aud = "2coomdashboard"
-    alg = ["HS256"]
-    resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
-                          audience=aud, options={"verify_exp": False},)
-    queryId = resPonse['queryId']
-    dbName = resPonse['dbName']
-    dbSqlQuery = resPonse['sqlQuery']
-    pivotCodeList = resPonse['pivotCode']
-    isAdmin = resPonse['isAdmin']
-    userId = resPonse['userId']
+# try:
+#     key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
+#     aud = "2coomdashboard"
+#     alg = ["HS256"]
+#     resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
+#                           audience=aud, options={"verify_exp": False},)
+#     queryId = resPonse['queryId']
+#     dbName = resPonse['dbName']
+#     dbSqlQuery = resPonse['sqlQuery']
+#     pivotCodeList = resPonse['pivotCode']
+#     isAdmin = resPonse['isAdmin']
+#     userId = resPonse['userId']
 
-    print('///////////////////////////////////')
-    print(pivotCodeList)
-    renderDataOnTable(dbName, dbSqlQuery, isAdmin,
-                      pivotCodeList, queryId, userId)
-except Exception:
-    # ExpiredSignatureError
-    st.set_page_config(layout="wide")
-    st.title('Access Denied')
-    print("An exception occurred")
+#     print('///////////////////////////////////')
+#     print(pivotCodeList)
+#     renderDataOnTable(dbName, dbSqlQuery, isAdmin,
+#                       pivotCodeList, queryId, userId)
+# except Exception:
+#     # ExpiredSignatureError
+#     st.set_page_config(layout="wide")
+#     st.title('Access Denied')
+#     print("An exception occurred")
 
 
-# key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
-# aud = "2coomdashboard"
-# alg = ["HS256"]
-# resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
-#                       audience=aud, options={"verify_exp": False},)
-# queryId = resPonse['queryId']
-# dbName = resPonse['dbName']
-# dbSqlQuery = resPonse['sqlQuery']
-# pivotCodeList = resPonse['pivotCode']
-# isAdmin = resPonse['isAdmin']
-# userId = resPonse['userId']
+key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
+aud = "2coomdashboard"
+alg = ["HS256"]
+resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
+                      audience=aud, options={"verify_exp": False},)
+queryId = resPonse['queryId']
+dbName = resPonse['dbName']
+dbSqlQuery = resPonse['sqlQuery']
+pivotCodeList = resPonse['pivotCode']
+isAdmin = resPonse['isAdmin']
+userId = resPonse['userId']
 
-# renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId)
+renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId)
