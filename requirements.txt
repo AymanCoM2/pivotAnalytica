@@ -2,4 +2,5 @@ streamlit
 pandas
 numpy
 pyjwt
+mitosheet
 pip install streamlit-javascript
