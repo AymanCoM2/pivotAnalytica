@@ -8,7 +8,6 @@ import requests
 import json
 import re
 from streamlit.components.v1 import html
-from IPython.display import display, Javascript
 
 # api_url = "http://10.10.10.66:8002/api/save-pivot"
 api_url = "http://127.0.0.1:8000/api/save-pivot"
