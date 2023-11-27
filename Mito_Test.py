@@ -72,8 +72,8 @@ def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userI
     username = 'ayman'
     password = 'admin@1234'
     # !@ Port is Very important to do this Connection
-    connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
-    # connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.4.1}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
+    # connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
+    connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.4.1}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
     connection = pyodbc.connect(connection_string)
     query_2 = (dbSqlQuery)
     # st.set_page_config(layout="wide")
