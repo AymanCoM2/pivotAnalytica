@@ -7,6 +7,7 @@ import requests
 import json
 import re
 
+
 def handleOneOrBulkPivots(codeString):
     pivot_lines = re.findall(
         r'# Pivoted dataFrame into (dataFrame_pivot|\S+_\d*)', codeString)
@@ -20,6 +21,7 @@ def handleOneOrBulkPivots(codeString):
     output_string = "new_dfs, code = spreadsheet({0}, df_names={1})\n".format(
         ','.join(df_names), str(df_names))
     return output_string
+
 
 def writePivotIntoFile(pivotCodeList):
     with open("my_script.py", "w") as file:
@@ -82,7 +84,7 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
         renderWithNewPivotCode(new_dfs, code, queryId, userId)
 
 
-# & Here you get the UUID and If It is Not Used you Render the new Table For it 
+# & Here you get the UUID and If It is Not Used you Render the new Table For it
 def secondStepGetUUIData(innerUUID):
     endPoint = "http://127.0.0.1:8000/api/get-uuid-data"
     data = {
@@ -111,7 +113,7 @@ def secondStepGetUUIData(innerUUID):
         print("Request failed with status code:", response.status_code)
 
 
-# & Here you Get the UUID Then If you Get it , You Send It to Another Function 
+# & Here you Get the UUID Then If you Get it , You Send It to Another Function
 def firstStepGetUUID():
     try:
         queryStringObject = st.experimental_get_query_params()
