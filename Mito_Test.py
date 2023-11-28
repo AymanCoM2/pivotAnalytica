@@ -64,11 +64,11 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     username = 'ayman'
     password = 'admin@1234'
     # !@ Port is Very important
-    connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
+    # connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
     # connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.4.1}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
-    # connection_string = "DRIVER={ODBC Driver 17 for SQL Server};SERVER="+server + \
-    #     "," + "443"+";"+"DATABASE=" + database + \
-    #     ";UID=" + username + ";PWD=" + password
+    connection_string = "DRIVER={ODBC Driver 17 for SQL Server};SERVER="+server + \
+        "," + "443"+";"+"DATABASE=" + database + \
+        ";UID=" + username + ";PWD=" + password
     connection = pyodbc.connect(connection_string)
     query_2 = (sqlQuery)
     st.set_page_config(layout="wide")
