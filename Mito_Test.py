@@ -2,12 +2,10 @@ import streamlit as st
 from mitosheet.streamlit.v1 import spreadsheet
 import pyodbc
 import pandas as pd
-import jwt
 from mitosheet.public.v3 import *
 import requests
 import json
 import re
-from streamlit.components.v1 import html
 
 def handleOneOrBulkPivots(codeString):
     pivot_lines = re.findall(
@@ -56,6 +54,7 @@ def renderWithNewPivotCode(new_dfs, code, queryId, userId):
             else:
                 print("Request failed with status code:", response.status_code)
 
+
 def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingNewPivot):
     # server = '10.10.10.100'
     server = 'jou.is-by.us'
@@ -81,6 +80,7 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     elif (isForSavingNewPivot):
         new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
         renderWithNewPivotCode(new_dfs, code, queryId, userId)
+
 
 # & Here you get the UUID and If It is Not Used you Render the new Table For it 
 def secondStepGetUUIData(innerUUID):
@@ -109,6 +109,7 @@ def secondStepGetUUIData(innerUUID):
                               query_id, user_id, isForSavingNewPivot)
     else:
         print("Request failed with status code:", response.status_code)
+
 
 # & Here you Get the UUID Then If you Get it , You Send It to Another Function 
 def firstStepGetUUID():
