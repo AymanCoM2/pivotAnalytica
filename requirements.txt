@@ -4,3 +4,4 @@ numpy
 pyjwt
 mitosheet
 pyodbc
+requests
