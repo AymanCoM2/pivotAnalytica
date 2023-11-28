@@ -9,12 +9,6 @@ import json
 import re
 from streamlit.components.v1 import html
 
-# api_url = "http://10.10.10.66:8002/api/save-pivot"
-api_url = "http://127.0.0.1:8000/api/save-pivot"
-queryStringObject = st.experimental_get_query_params()
-if (queryStringObject):
-    tokenQuery = queryStringObject['name'][0]
-
 
 def handleOneOrBulkPivots(codeString):
     pivot_lines = re.findall(
@@ -30,14 +24,12 @@ def handleOneOrBulkPivots(codeString):
         ','.join(df_names), str(df_names))
     return output_string
 
-
 def writePivotIntoFile(pivotCodeList):
     with open("my_script.py", "w") as file:
-        # This is a List so you Will need to Parse Later
         file.write(pivotCodeList)
 
 
-def doThePivotCode(new_dfs, code, queryId, userId):
+def renderWithNewPivotCode(new_dfs, code, queryId, userId):
     st.write(new_dfs)
     st.code(code)
     dataframes = list(new_dfs.keys())[1:]
@@ -58,76 +50,80 @@ def doThePivotCode(new_dfs, code, queryId, userId):
             }
             json_data = json.dumps(data)
             headers = {"Content-Type": "application/json"}
+            api_url = "http://127.0.0.1:8000/api/save-pivot"
             response = requests.post(api_url,  data=json_data, headers=headers)
             if response.status_code == 200:
                 print("Request was successful.")
             else:
                 print("Request failed with status code:", response.status_code)
 
-
- 
-def renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId):
+def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingNewPivot):
     # server = '10.10.10.100'
     server = 'jou.is-by.us'
     database = dbName
     username = 'ayman'
     password = 'admin@1234'
-    # !@ Port is Very important to do this Connection
-    # connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
+    # !@ Port is Very important
+    connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
     # connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.4.1}};SERVER={server};DATABASE={database};UID={username};PWD={password}"
-    connection_string = "DRIVER={ODBC Driver 17 for SQL Server};SERVER="+server+"," +"443"+";"+"DATABASE="+ dbName+ ";UID="+ username+ ";PWD="+ password
-    # ^@ This is the Last One For the Pivot On the Streamlit Code on the Cloud;
+    # connection_string = "DRIVER={ODBC Driver 17 for SQL Server};SERVER="+server + \
+    #     "," + "443"+";"+"DATABASE=" + database + \
+    #     ";UID=" + username + ";PWD=" + password
     connection = pyodbc.connect(connection_string)
- 
-    query_2 = (dbSqlQuery)
-    # st.set_page_config(layout="wide")
+    query_2 = (sqlQuery)
+    st.set_page_config(layout="wide")
     st.title('MITO SHEET')
     dataFrame = pd.read_sql(query_2, connection)
-    if pivotCodeList:
-        # ! This is Userless Code , Just Writing it to know it
-        writePivotIntoFile(pivotCodeList)
-        # ! Here will be a loop Over the Codes To make ALL pivots One By One
+    if pivotCode:
+        writePivotIntoFile(pivotCode)
+        # ! Above is Useless Code , Just Writing it to know it
         exec_globals = {'dataFrame': dataFrame}
-        exec(pivotCodeList, exec_globals)
-    else:
+        exec(pivotCode, exec_globals)
+    elif (isForSavingNewPivot):
         new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
-        doThePivotCode(new_dfs, code, queryId, userId)
+        renderWithNewPivotCode(new_dfs, code, queryId, userId)
+
+# & Here you get the UUID and If It is Not Used you Render the new Table For it 
+def secondStepGetUUIData(innerUUID):
+    endPoint = "http://127.0.0.1:8000/api/get-uuid-data"
+    data = {
+        "uuid": innerUUID,
+    }
+    json_data = json.dumps(data)
+    headers = {"Content-Type": "application/json"}
+    response = requests.post(endPoint,  data=json_data, headers=headers)
+    if response.status_code == 200:
+        print("Request was successful.")
+        tempObject = response.json()
+        isUsed = tempObject['isUsed']
+        if (isUsed):
+            print('is Used')
+            raise ValueError("Key Is Used")
+        else:
+            isForSavingNewPivot = tempObject['isForSavingNewPivot']
+            user_id = tempObject['user_id']
+            query_id = tempObject['query_id']
+            pivotCode = tempObject['pivotCode']
+            sqlQuery = tempObject['sqlQuery']
+            dbName = tempObject['dbName']
+            renderDataOnTable(dbName, sqlQuery, pivotCode,
+                              query_id, user_id, isForSavingNewPivot)
+    else:
+        print("Request failed with status code:", response.status_code)
+
+# & Here you Get the UUID Then If you Get it , You Send It to Another Function 
+def firstStepGetUUID():
+    try:
+        queryStringObject = st.experimental_get_query_params()
+        if (queryStringObject):
+            insertedUUID = queryStringObject['name'][0]
+        secondStepGetUUIData(insertedUUID)
+    except Exception:
+        print(None)
 
 
-# try:
-#     key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
-#     aud = "2coomdashboard"
-#     alg = ["HS256"]
-#     resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
-#                           audience=aud, options={"verify_exp": False},)
-#     queryId = resPonse['queryId']
-#     dbName = resPonse['dbName']
-#     dbSqlQuery = resPonse['sqlQuery']
-#     pivotCodeList = resPonse['pivotCode']
-#     isAdmin = resPonse['isAdmin']
-#     userId = resPonse['userId']
-
-#     print('///////////////////////////////////')
-#     print(pivotCodeList)
-#     renderDataOnTable(dbName, dbSqlQuery, isAdmin,
-#                       pivotCodeList, queryId, userId)
+firstStepGetUUID()
 # except Exception:
-#     # ExpiredSignatureError
 #     st.set_page_config(layout="wide")
 #     st.title('Access Denied')
 #     print("An exception occurred")
-
-
-key = "simpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKeysimpleKey"
-aud = "2coomdashboard"
-alg = ["HS256"]
-resPonse = jwt.decode(tokenQuery, key, algorithms=alg,
-                      audience=aud, options={"verify_exp": False},)
-queryId = resPonse['queryId']
-dbName = resPonse['dbName']
-dbSqlQuery = resPonse['sqlQuery']
-pivotCodeList = resPonse['pivotCode']
-isAdmin = resPonse['isAdmin']
-userId = resPonse['userId']
-
-renderDataOnTable(dbName, dbSqlQuery, isAdmin, pivotCodeList, queryId, userId)
