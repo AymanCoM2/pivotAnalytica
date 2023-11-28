@@ -9,7 +9,6 @@ import json
 import re
 from streamlit.components.v1 import html
 
-
 def handleOneOrBulkPivots(codeString):
     pivot_lines = re.findall(
         r'# Pivoted dataFrame into (dataFrame_pivot|\S+_\d*)', codeString)
