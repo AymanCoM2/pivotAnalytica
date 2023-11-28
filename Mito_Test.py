@@ -49,7 +49,7 @@ def renderWithNewPivotCode(new_dfs, code, queryId, userId):
             }
             json_data = json.dumps(data)
             headers = {"Content-Type": "application/json"}
-            api_url = "http://127.0.0.1:8000/api/save-pivot"
+            api_url = "https://jou.mine.nu:8010/api/save-pivot"
             response = requests.post(api_url,  data=json_data, headers=headers)
             if response.status_code == 200:
                 print("Request was successful.")
@@ -86,7 +86,7 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
 
 # & Here you get the UUID and If It is Not Used you Render the new Table For it
 def secondStepGetUUIData(innerUUID):
-    endPoint = "http://127.0.0.1:8000/api/get-uuid-data"
+    endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
     data = {
         "uuid": innerUUID,
     }
