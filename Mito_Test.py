@@ -28,7 +28,7 @@ def writePivotIntoFile(pivotCodeList):
         file.write(pivotCodeList)
 
 
-def renderWithNewPivotCode(new_dfs, code, queryId, userId,innerUUID):
+def renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID):
     st.write(new_dfs)
     st.code(code)
     dataframes = list(new_dfs.keys())[1:]
@@ -57,8 +57,7 @@ def renderWithNewPivotCode(new_dfs, code, queryId, userId,innerUUID):
                 print("Request failed with status code:", response.status_code)
 
 
-
-def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingNewPivot , innerUUID):
+def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingNewPivot, innerUUID):
     # server = '10.10.10.100'
     server = 'jou.is-by.us'
     database = dbName
@@ -82,7 +81,7 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
         exec(pivotCode, exec_globals)
     elif (isForSavingNewPivot):
         new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
-        renderWithNewPivotCode(new_dfs, code, queryId, userId ,innerUUID)
+        renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID)
 
 # * -----------------------------------------------------------------------
 # ^ -----------------------------------------------------------------------
@@ -90,21 +89,20 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
 # * -----------------------------------------------------------------------
 # & -----------------------------------------------------------------------
 
-def markAsUsed(innerUUID):
-    endPoint = "https://jou.mine.nu:8010/api/uuid-is-used"
-    # endPoint = "http://127.0.0.1:8010/api/uuid-is-used"
-    data = {
-        "uuid": innerUUID,
-    }
-    json_data = json.dumps(data)
-    headers = {"Content-Type": "application/json"}
-    response = requests.post(endPoint,  data=json_data, headers=headers)
-    if response.status_code == 200:
-        print("Request was successful.")
-    else:
-        print("Request failed with status code:", response.status_code)
 
-
+# def markAsUsed(innerUUID):
+#     endPoint = "https://jou.mine.nu:8010/api/uuid-is-used"
+#     # endPoint = "http://127.0.0.1:8010/api/uuid-is-used"
+#     data = {
+#         "uuid": innerUUID,
+#     }
+#     json_data = json.dumps(data)
+#     headers = {"Content-Type": "application/json"}
+#     response = requests.post(endPoint,  data=json_data, headers=headers)
+#     if response.status_code == 200:
+#         print("Request was successful.")
+#     else:
+#         print("Request failed with status code:", response.status_code)
 
 
 def secondStepGetUUIData(innerUUID):
@@ -130,7 +128,7 @@ def secondStepGetUUIData(innerUUID):
             pivotCode = tempObject['pivotCode']
             sqlQuery = tempObject['sqlQuery']
             dbName = tempObject['dbName']
-            
+
             renderDataOnTable(dbName, sqlQuery, pivotCode,
                               query_id, user_id, isForSavingNewPivot, innerUUID)
     else:
