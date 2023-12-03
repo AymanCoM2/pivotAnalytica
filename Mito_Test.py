@@ -90,21 +90,22 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
 # * -----------------------------------------------------------------------
 # & -----------------------------------------------------------------------
 
-def markAsUsed(innerUUID):
-    endPoint = "https://jou.mine.nu:8010/api/uuid-is-used"
-    # endPoint = "http://127.0.0.1:8010/api/uuid-is-used"
-    data = {
-        "uuid": innerUUID,
-    }
-    json_data = json.dumps(data)
-    headers = {"Content-Type": "application/json"}
-    response = requests.post(endPoint,  data=json_data, headers=headers)
-    if response.status_code == 200:
-        print("Request was successful.")
-    else:
-        print("Request failed with status code:", response.status_code)
+# def markAsUsed(innerUUID):
+#     endPoint = "https://jou.mine.nu:8010/api/uuid-is-used"
+#     # endPoint = "http://127.0.0.1:8010/api/uuid-is-used"
+#     data = {
+#         "uuid": innerUUID,
+#     }
+#     json_data = json.dumps(data)
+#     headers = {"Content-Type": "application/json"}
+#     response = requests.post(endPoint,  data=json_data, headers=headers)
+#     if response.status_code == 200:
+#         print("Request was successful.")
+#     else:
+#         print("Request failed with status code:", response.status_code)
 
-
+def markAsUsed(uuid):
+    pass 
 def secondStepGetUUIData(innerUUID):
     endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
     # endPoint = "http://127.0.0.1:8010/api/get-uuid-data"
