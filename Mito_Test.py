@@ -105,7 +105,9 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
 #         print("Request failed with status code:", response.status_code)
 
 def markAsUsed(uuid):
-    pass 
+    pass
+
+
 def secondStepGetUUIData(innerUUID):
     endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
     # endPoint = "http://127.0.0.1:8010/api/get-uuid-data"
