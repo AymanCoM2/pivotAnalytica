@@ -55,7 +55,7 @@ def renderWithNewPivotCode(new_dfs, code, queryId, userId,innerUUID):
                 print("Request was successful.")
             else:
                 print("Request failed with status code:", response.status_code)
-    markAsUsed(innerUUID) 
+
 
 
 def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingNewPivot , innerUUID):
@@ -83,7 +83,6 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     elif (isForSavingNewPivot):
         new_dfs, code = spreadsheet(dataFrame, df_names=['dataFrame'])
         renderWithNewPivotCode(new_dfs, code, queryId, userId ,innerUUID)
-    markAsUsed(innerUUID) 
 
 # * -----------------------------------------------------------------------
 # ^ -----------------------------------------------------------------------
