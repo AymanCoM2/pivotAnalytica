@@ -84,9 +84,30 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
         renderWithNewPivotCode(new_dfs, code, queryId, userId)
 
 
-# & Here you get the UUID and If It is Not Used you Render the new Table For it
+# * -----------------------------------------------------------------------
+# ^ -----------------------------------------------------------------------
+# ? -----------------------------------------------------------------------
+# * -----------------------------------------------------------------------
+# & -----------------------------------------------------------------------
+
+def markAsUsed(innerUUID):
+    endPoint = "https://jou.mine.nu:8010/api/uuid-is-used"
+    # endPoint = "http://127.0.0.1:8010/api/uuid-is-used"
+    data = {
+        "uuid": innerUUID,
+    }
+    json_data = json.dumps(data)
+    headers = {"Content-Type": "application/json"}
+    response = requests.post(endPoint,  data=json_data, headers=headers)
+    if response.status_code == 200:
+        print("Request was successful.")
+    else:
+        print("Request failed with status code:", response.status_code)
+
+
 def secondStepGetUUIData(innerUUID):
     endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
+    # endPoint = "http://127.0.0.1:8010/api/get-uuid-data"
     data = {
         "uuid": innerUUID,
     }
@@ -107,13 +128,13 @@ def secondStepGetUUIData(innerUUID):
             pivotCode = tempObject['pivotCode']
             sqlQuery = tempObject['sqlQuery']
             dbName = tempObject['dbName']
+            markAsUsed(innerUUID)
             renderDataOnTable(dbName, sqlQuery, pivotCode,
                               query_id, user_id, isForSavingNewPivot)
     else:
         print("Request failed with status code:", response.status_code)
 
 
-# & Here you Get the UUID Then If you Get it , You Send It to Another Function
 def firstStepGetUUID():
     try:
         queryStringObject = st.experimental_get_query_params()
@@ -125,7 +146,3 @@ def firstStepGetUUID():
 
 
 firstStepGetUUID()
-# except Exception:
-#     st.set_page_config(layout="wide")
-#     st.title('Access Denied')
-#     print("An exception occurred")

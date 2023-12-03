@@ -1,7 +1,6 @@
 streamlit
 pandas
 numpy
-pyjwt
 mitosheet
 pyodbc
 requests
