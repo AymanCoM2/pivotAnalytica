@@ -1,4 +1,5 @@
 [server]
 headless=true
+server.enableXsrfProtection=false
 enableCORS=false
 global.developmentMode=false
