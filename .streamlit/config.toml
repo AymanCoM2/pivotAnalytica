@@ -2,4 +2,5 @@
 headless=true
 enableXsrfProtection=false
 enableCORS=false
-global.developmentMode=false
+[global]
+developmentMode=false
