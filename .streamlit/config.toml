@@ -1,5 +1,0 @@
-# .streamlit/config.toml
-
-[server]
-sslCertFile = '/etc/letsencrypt/live/jou.mine.nu/fullchain.pem'
-sslKeyFile = '/etc/letsencrypt/live/jou.mine.nu/privkey.pem'
