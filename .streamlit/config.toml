@@ -1,2 +1,4 @@
 [server]
+server.headless=true
 enableCORS=false
+global.developmentMode=false
