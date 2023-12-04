@@ -29,9 +29,9 @@ def writePivotIntoFile(pivotCodeList):
 
 
 def renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID):
-    st.write(new_dfs)
+    # st.write(new_dfs)
     st.code(code)
-    dataframes = list(new_dfs.keys())[1:]
+    # dataframes = list(new_dfs.keys())[1:]
     fileContent = ''
     if st.button('Save Pivots'):
         with open("my_script.py", "w") as file:
@@ -72,7 +72,7 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     connection = pyodbc.connect(connection_string)
     query_2 = (sqlQuery)
     st.set_page_config(layout="wide")
-    st.title('MITO SHEET')
+    st.title('جدول التقارير')
     dataFrame = pd.read_sql(query_2, connection)
     if pivotCode:
         writePivotIntoFile(pivotCode)
