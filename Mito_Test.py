@@ -8,7 +8,6 @@ import json
 import re
 
 
-# Helper Function For Saving the Pivot Code ;
 def handleOneOrBulkPivots(codeString):
     pivot_lines = re.findall(
         r'# Pivoted dataFrame into (dataFrame_pivot|\S+_\d*)', codeString)
@@ -29,11 +28,7 @@ def writePivotIntoFile(pivotCodeList):
         file.write(pivotCodeList)
 
 
-# Handling Saving For a "New Pivot Code" ;
 def renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID):
-    # st.write(new_dfs)
-    # st.code(code)
-    # dataframes = list(new_dfs.keys())[1:]
     fileContent = ''
     if st.button('Save Pivots'):
         with open("my_script.py", "w") as file:
@@ -52,7 +47,6 @@ def renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID):
             json_data = json.dumps(data)
             headers = {"Content-Type": "application/json"}
             api_url = "https://jou.mine.nu:8010/api/save-pivot"
-            # api_url = "http://127.0.0.1:8010/api/save-pivot"
             response = requests.post(api_url,  data=json_data, headers=headers)
             if response.status_code == 200:
                 print("Request was successful.")
@@ -60,9 +54,7 @@ def renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID):
                 print("Request failed with status code:", response.status_code)
 
 
-# Checking If it is For "Pivot Saving Or new Pivot" ?
 def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingNewPivot, innerUUID, originalCode):
-    # server = '10.10.10.100'
     server = 'jou.is-by.us'
     database = dbName
     username = 'ayman'
@@ -70,9 +62,6 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     # !@ Port is Very important
     # connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
     connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.5.1}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
-    # connection_string = "DRIVER={ODBC Driver 17 for SQL Server};SERVER="+server + \
-    #     "," + "443"+";"+"DATABASE=" + database + \
-    #     ";UID=" + username + ";PWD=" + password
     connection = pyodbc.connect(connection_string)
     query_2 = (sqlQuery)
     st.set_page_config(layout="wide")
@@ -90,7 +79,6 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
         renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID)
 
 
-# Checking Used Or NOT ?
 def secondStepGetUUIData(innerUUID):
     endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
     # endPoint = "http://127.0.0.1:8010/api/get-uuid-data"
@@ -101,7 +89,7 @@ def secondStepGetUUIData(innerUUID):
     headers = {"Content-Type": "application/json"}
     response = requests.post(endPoint,  data=json_data, headers=headers)
     if response.status_code == 200:
-        print("Request was azabn.")
+        print("secondStepGetUUIData Request.")
         tempObject = response.json()
         isUsed = tempObject['isUsed']
         if (isUsed):
@@ -120,8 +108,6 @@ def secondStepGetUUIData(innerUUID):
     else:
         print("Request failed with status code:", response.status_code)
 
-# Get the UUID and Send it another function;
-
 
 def firstStepGetUUID():
     try:
@@ -134,22 +120,3 @@ def firstStepGetUUID():
 
 
 firstStepGetUUID()
-
-# ^ -----------------------------------------------------------------------
-# ? -----------------------------------------------------------------------
-# & -----------------------------------------------------------------------
-# * -----------------------------------------------------------------------
-
-# def markAsUsed(innerUUID):
-#     endPoint = "https://jou.mine.nu:8010/api/uuid-is-used"
-#     # endPoint = "http://127.0.0.1:8010/api/uuid-is-used"
-#     data = {
-#         "uuid": innerUUID,
-#     }
-#     json_data = json.dumps(data)
-#     headers = {"Content-Type": "application/json"}
-#     response = requests.post(endPoint,  data=json_data, headers=headers)
-#     if response.status_code == 200:
-#         print("Request was successful.")
-#     else:
-#         print("Request failed with status code:", response.status_code)
