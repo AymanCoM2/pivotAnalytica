@@ -65,9 +65,7 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     connection = pyodbc.connect(connection_string)
     query_2 = (sqlQuery)
     st.set_page_config(layout="wide")
-    st.header('Header')
-    st.title('Title')
-    st.text("Text")
+    st.header('جدول التقارير')
     dataFrame = pd.read_sql(query_2, connection)
     if pivotCode:
         # writePivotIntoFile(pivotCode)
