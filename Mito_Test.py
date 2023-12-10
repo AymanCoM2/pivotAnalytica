@@ -68,8 +68,8 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     st.header('جدول التقارير')
     dataFrame = pd.read_sql(query_2, connection)
     if pivotCode:
-        # writePivotIntoFile(pivotCode)
-        # ! Above is Useless Code , Just Writing it to know it
+        writePivotIntoFile(pivotCode)
+        # ! Above is Useless Code,Just Writing it to know it
         exec_globals = {'dataFrame': dataFrame}
         exec(pivotCode, exec_globals)
     elif (isForSavingNewPivot):
@@ -79,7 +79,6 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
 
 def secondStepGetUUIData(innerUUID):
     endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
-    # endPoint = "http://127.0.0.1:8010/api/get-uuid-data"
     data = {
         "uuid": innerUUID,
     }
