@@ -51,8 +51,8 @@ def renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID):
             }
             json_data = json.dumps(data)
             headers = {"Content-Type": "application/json"}
-            # api_url = "https://jou.mine.nu:8010/api/save-pivot"
-            api_url = "http://127.0.0.1:8010/api/save-pivot"
+            api_url = "https://jou.mine.nu:8010/api/save-pivot"
+            # api_url = "http://127.0.0.1:8010/api/save-pivot"
             response = requests.post(api_url,  data=json_data, headers=headers)
             if response.status_code == 200:
                 print("Request was successful.")
@@ -68,8 +68,8 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
     username = 'ayman'
     password = 'admin@1234'
     # !@ Port is Very important
-    connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
-    # connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.5.1}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
+    # connection_string = f"DRIVER={{SQL Server}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
+    connection_string = f"DRIVER={{/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.10.so.5.1}};SERVER={server},443;DATABASE={database};UID={username};PWD={password}"
     # connection_string = "DRIVER={ODBC Driver 17 for SQL Server};SERVER="+server + \
     #     "," + "443"+";"+"DATABASE=" + database + \
     #     ";UID=" + username + ";PWD=" + password
@@ -92,8 +92,8 @@ def renderDataOnTable(dbName, sqlQuery, pivotCode, queryId, userId, isForSavingN
 
 # Checking Used Or NOT ?
 def secondStepGetUUIData(innerUUID):
-    # endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
-    endPoint = "http://127.0.0.1:8010/api/get-uuid-data"
+    endPoint = "https://jou.mine.nu:8010/api/get-uuid-data"
+    # endPoint = "http://127.0.0.1:8010/api/get-uuid-data"
     data = {
         "uuid": innerUUID,
     }
