@@ -30,6 +30,7 @@ def writePivotIntoFile(pivotCodeList):
 
 def renderWithNewPivotCode(new_dfs, code, queryId, userId, innerUUID):
     fileContent = ''
+    st.code(code)
     if st.button('Save Pivots'):
         with open("my_script.py", "w") as file:
             file.write('from mitosheet.streamlit.v1 import spreadsheet\n')
